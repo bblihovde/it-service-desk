@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Help Desk Ticket Simulator</title>
+<style>
+body{font:16px system-ui,Arial;background:#f3f5f8;color:#202b3b;margin:0}header{background:#183454;color:white;padding:18px 26px}main{max-width:850px;margin:28px auto;padding:0 16px}.panel{background:white;border:1px solid #d5dce5;border-radius:10px;padding:24px;margin-bottom:16px;box-shadow:0 2px 6px #00000009}button{font:inherit;cursor:pointer;padding:12px 15px;border-radius:7px;border:1px solid #9aadc1;background:white;text-align:left;margin:6px 0;width:100%}button:hover,button:focus{background:#eaf2ff;border-color:#2866aa}button.primary{background:#205b96;color:white;width:auto}.tag{background:#dceaf9;color:#204f80;padding:4px 10px;border-radius:20px;font-size:13px}.muted{color:#526070}.feedback{background:#edf5ff;border-left:4px solid #3773ae;padding:14px;margin-top:14px}dl{display:grid;grid-template-columns:140px 1fr;gap:9px}dt{font-weight:650}dd{margin:0}#detail,#decision,#result{display:none}#history li{margin-bottom:6px}</style></head>
+<body><header><strong>Service Desk</strong> &nbsp; | &nbsp; Training Ticket Queue</header><main>
+<section class="panel" id="queue"><h1>Open Tickets</h1><p class="muted">Select a ticket to review the request.</p><button onclick="openTicket()"><strong>#1001 — Printer error, Marketing</strong><br><small>Sarah Mitchell · Room 214 · <span class="tag">New</span></small></button></section>
+<section class="panel" id="detail"><button class="primary" onclick="reset()">← Ticket Queue</button><h1>Ticket #1001 <span class="tag">Open</span></h1>
+<dl><dt>Submitted by</dt><dd>Sarah Mitchell (fictional)</dd><dt>Department</dt><dd>Marketing</dd><dt>Location</dt><dd>Room 214</dd><dt>Device</dt><dd>HP LaserJet 4240n</dd><dt>Priority</dt><dd>Normal</dd><dt>Error code</dt><dd id="error"></dd></dl>
+<h2>Customer description</h2><p>“The printer displays error code <strong id="error2"></strong> and won't print. I already turned it off and back on, but the same error remains.”</p>
+<div id="decision"><h2>What would you do first?</h2>
+<button onclick="choose('customer')">A. Contact the customer to gather additional details</button>
+<button onclick="choose('manual')">B. Consult the printer service manual for the error code</button>
+<button onclick="choose('restart')">C. Ask the customer to restart the printer</button></div>
+<div id="result" class="feedback" aria-live="polite"><strong id="feedbackTitle"></strong><p id="feedback"></p><button class="primary" onclick="again()">Choose another action</button></div></section>
+<section class="panel" id="log" style="display:none"><h2>Activity history</h2><ol id="history"></ol><p class="muted">Prototype only: choices are not saved after refresh and are not submitted to Canvas.</p></section>
+</main><script>
+// EDIT THIS CONFIGURATION to customize the ticket.
+const ticket={errorCode:"51.00.20",customerResponse:"The printer is still displaying the same error. Restarting it did not help."};
+function openTicket(){document.getElementById('queue').style.display='none';document.getElementById('detail').style.display='block';document.getElementById('log').style.display='block';document.getElementById('decision').style.display='block';document.getElementById('error').textContent=ticket.errorCode;document.getElementById('error2').textContent=ticket.errorCode;}
+function choose(key){const responses={customer:["Customer contacted",ticket.customerResponse+" You can now choose another action."],manual:["Good job!","Refer to your actual HP LaserJet service manual and locate error code "+ticket.errorCode+". The manual-based steps will be added in the next version."],restart:["Review the ticket","The customer already restarted the printer. Review the original ticket before recommending a repeated step."]};const labels={customer:"Contact customer",manual:"Consult service manual",restart:"Request restart"};document.getElementById('feedbackTitle').textContent=responses[key][0];document.getElementById('feedback').textContent=responses[key][1];document.getElementById('decision').style.display='none';document.getElementById('result').style.display='block';const li=document.createElement('li');li.textContent=labels[key];document.getElementById('history').appendChild(li);}
+function again(){document.getElementById('result').style.display='none';document.getElementById('decision').style.display='block'}
+function reset(){document.getElementById('detail').style.display='none';document.getElementById('log').style.display='none';document.getElementById('queue').style.display='block';document.getElementById('history').replaceChildren();again()}
+</script></body></html>
